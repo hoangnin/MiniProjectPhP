@@ -66,11 +66,11 @@
                         </td>
                         <td class="px-6 py-4">
                             @if($task->status === 'completed')
-                                <flux:badge color="green">Completed</flux:badge>
+                                <flux:badge variant="solid" color="green">Completed</flux:badge>
                             @elseif($task->status === 'in_progress')
-                                <flux:badge color="blue">In Progress</flux:badge>
+                                <flux:badge variant="solid" color="blue">In Progress</flux:badge>
                             @else
-                                <flux:badge color="yellow">Pending</flux:badge>
+                                <flux:badge variant="solid" color="yellow">Pending</flux:badge>
                             @endif
                         </td>
                         <td class="px-6 py-4">
