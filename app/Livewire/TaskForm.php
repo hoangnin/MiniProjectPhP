@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class TaskForm extends Component
 {
-    public $title, $description, $status, $due_date;
+    public $title, $description, $status='', $due_date;
     protected $rules = [
         'title' => 'required|string|max:255',
         'status' => 'required|in:pending,in_progress,completed',

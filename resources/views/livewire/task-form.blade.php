@@ -1,29 +1,30 @@
 <div class="p-4">
     <form wire:submit.prevent="submit" class="space-y-4">
         <div>
-            <label class="block">Title</label>
-            <input type="text" wire:model="title" class="w-full border rounded p-2">
-            @error('title') <span class="text-red-500">{{$message}}</span> @enderror
+            <flux:input type="text" label="Title" wire:model="title" />
+{{--            @error('title') <span class="text-red-500">{{$message}}</span> @enderror--}}
         </div>
         <div>
-            <label class="block">Description</label>
-            <textarea wire:model="description" class="w-full border rounded p-2"></textarea>
+            <flux:textarea wire:model="description" label="Description" placeholder="Describe you task here" ></flux:textarea>
         </div>
         <div>
-            <label class="block">Status *</label>
-            <select wire:model="status" class="w-full border rounded p-2">
-                <option>-- Select --</option>
-                <option value="pending">Pending</option>
-                <option value="in_progress">In progress</option>
-                <option value="completed">Completed</option>
-            </select>
-            @error('status') <span class="text-red-500">{{$message}}</span> @enderror
+            <flux:select wire:model="status" label="Status" placeholder="Choose an option status" >
+                <flux:select.option value="pending">Pending</flux:select.option>
+                <flux:select.option value="in_progress">In progress</flux:select.option>
+                <flux:select.option value="completed">Completed</flux:select.option>
+            </flux:select>
+{{--            @error('status') <span class="text-red-500">{{$message}}</span> @enderror--}}
         </div>
-        <div>
-            <label class="block">Due Date *</label>
-            <input type="date" wire:model="due_date" class="w-full border rounded p-2">
-            @error('due_date') <span class="text-red-500">{{ $message }}</span> @enderror
-        </div>
+
+       <div>
+           <label class="block text-sm font-medium text-gray-700 mb-1">Due Date *</label>
+           <input
+               type="date"
+               wire:model="due_date"
+               class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+           >
+           @error('due_date') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+       </div>
 
         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
             Save

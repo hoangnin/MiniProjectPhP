@@ -1,9 +1,10 @@
 <div class="flex justify-center w-full">
     <div class="w-[65%]">
-        <div class="flex items-center justify-between py-4 bg-white">
+        <div class="flex items-center justify-between py-4 px-8 bg-white">
             <button wire:click="openForm"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
-                + Create Task
+                    class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                <flux:icon name="clipboard-plus" class="w-5 h-5" />
+                <span>Create Task</span>
             </button>
 
             <div class="relative">
@@ -14,9 +15,19 @@
                               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
+
                 <input type="text"
+                       wire:model.live.debounce.300ms="search"
                        class="block ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                        placeholder="Search for tasks">
+
+                {{-- loader khi đang search --}}
+                <div class="absolute inset-y-0 right-3 flex items-center" wire:loading.delay.shortest wire:target="search">
+                    <svg class="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="4" opacity=".25"/>
+                        <path d="M22 12a10 10 0 0 1-10 10" fill="currentColor"/>
+                    </svg>
+                </div>
             </div>
         </div>
 
@@ -31,25 +42,15 @@
                             <label for="checkbox-all" class="sr-only">checkbox</label>
                         </div>
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        Title
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Description
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Status
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Due Date
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>
+                    <th scope="col" class="px-6 py-3">Title</th>
+                    <th scope="col" class="px-6 py-3">Description</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3">Due Date</th>
+                    <th scope="col" class="px-6 py-3">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($tasks as $task)
+                @foreach($this->tasks as $task)
                     <tr class="bg-white border-b hover:bg-gray-50">
                         <td class="w-4 p-4">
                             <div class="flex items-center">
@@ -86,8 +87,8 @@
             </table>
         </div>
 
-        <flux:modal wire:model="showTaskForm">
-            <livewire:task-form/>
+        <flux:modal wire:model="showTaskForm" class="md:w-screen" container-class="w-full">
+            <livewire:task-form />
         </flux:modal>
     </div>
 </div>
