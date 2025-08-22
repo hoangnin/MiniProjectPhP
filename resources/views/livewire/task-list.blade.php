@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between py-4 px-8 bg-white">
             <button wire:click="openForm"
                     class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
-                <flux:icon name="clipboard-plus" class="w-5 h-5" />
+                <flux:icon name="clipboard-plus" class="w-5 h-5"/>
                 <span>Create Task</span>
             </button>
 
@@ -22,9 +22,11 @@
                        placeholder="Search for tasks">
 
                 {{-- loader khi đang search --}}
-                <div class="absolute inset-y-0 right-3 flex items-center" wire:loading.delay.shortest wire:target="search">
+                <div class="absolute inset-y-0 right-3 flex items-center" wire:loading.delay.shortest
+                     wire:target="search">
                     <svg class="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="4" opacity=".25"/>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="4"
+                                opacity=".25"/>
                         <path d="M22 12a10 10 0 0 1-10 10" fill="currentColor"/>
                     </svg>
                 </div>
@@ -51,7 +53,7 @@
                 </thead>
                 <tbody>
                 @foreach($this->tasks as $task)
-                    <tr class="bg-white border-b hover:bg-gray-50">
+                    <tr class="bg-white border-b hover:bg-gray-50" wire:key="task-{{ $task->id }}">
                         <td class="w-4 p-4">
                             <div class="flex items-center">
                                 <input id="checkbox-{{ $task->id }}" type="checkbox"
@@ -78,8 +80,31 @@
                             {{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            <a href="#" class="font-medium text-red-600 hover:underline ml-3">Delete</a>
+                            {{--task form--}}
+                            <flux:modal.trigger name="update-task-{{$task->id}}">
+                                <flux:button variant="ghost" size="sm">
+                                    <flux:icon name="square-pen" color="green" class="w-4 h-4" />
+                                </flux:button>
+                            </flux:modal.trigger>
+                            <flux:modal name="update-task-{{$task->id}}" class="md:w-screen" container-class="w-full">
+                                <livewire:task-form :taskId="$task->id" :key="'task-form-'.$task->id"/>
+                            </flux:modal>
+
+                            {{--confirm model--}}
+                            <flux:modal.trigger name="delete-task-{{$task->id}}">
+                                <flux:button variant="ghost" size="sm">
+                                    <flux:icon name="trash-2" color="red" class="w-4 h-4" />
+                                </flux:button>
+                            </flux:modal.trigger>
+                            <livewire:confirm-modal
+                                :key="'delete-task-'.$task->id"
+                                name="delete-task-{{$task->id}}"
+                                model="App\Models\Task"
+                                :modelId="$task->id"
+                                title="Delete Task?"
+                                :message="'<p>Are you sure want to delete <strong>'.$task->title.'</strong>?<p>'"
+                                confirmText="Delete"
+                            />
                         </td>
                     </tr>
                 @endforeach
@@ -87,8 +112,8 @@
             </table>
         </div>
 
-        <flux:modal wire:model="showTaskForm" class="md:w-screen" container-class="w-full">
-            <livewire:task-form />
+        <flux:modal wire:model="showTaskForm" name="createTaskForm" class="md:w-screen" container-class="w-full">
+            <livewire:task-form/>
         </flux:modal>
     </div>
 </div>

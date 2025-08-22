@@ -25,7 +25,7 @@ class TaskList extends Component
     {
         $this->showTaskForm = false;
     }
-
+    #[On('itemDeleted')]
     #[On('taskAdded')]
     public function refreshList()
     {
