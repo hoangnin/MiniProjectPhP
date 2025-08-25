@@ -9,6 +9,7 @@ use Livewire\Component;
 class TaskForm extends Component
 {
     public $title, $description, $status = '', $due_date, $taskId = null;
+    public $modalName;
     protected $rules = [
         'title' => 'required|string|max:255',
         'description' => 'nullable|string',
@@ -54,12 +55,11 @@ class TaskForm extends Component
         }
         $this->reset();
         $this->dispatch('taskAdded');
-        $this->dispatch('closeModal');
+        $this->dispatch('modal-close', name: $this->modalName);
     }
     public function cancel()
     {
-        // đúng event mà Flux modal đang lắng nghe
-        $this->dispatch('modal-close', name: "createTaskForm");
+        $this->dispatch('modal-close', name: $this->modalName);
     }
     public function render()
     {

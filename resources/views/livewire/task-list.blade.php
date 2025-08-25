@@ -87,7 +87,7 @@
                                 </flux:button>
                             </flux:modal.trigger>
                             <flux:modal name="update-task-{{$task->id}}" class="md:w-screen" container-class="w-full">
-                                <livewire:task-form :taskId="$task->id" :key="'task-form-'.$task->id"/>
+                                <livewire:task-form :taskId="$task->id" :modalName="'update-task-'.$task->id" :key="'task-form-'.$task->id"/>
                             </flux:modal>
 
                             {{--confirm model--}}
