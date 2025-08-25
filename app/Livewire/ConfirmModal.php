@@ -24,14 +24,12 @@ class ConfirmModal extends Component
                 $item->delete();
                 $this->dispatch('itemDeleted', id: $this->modelId);
             }
-            $this->dispatch(
-                'toast',
-                [
-                    'type' => 'success',
-                    'message' => 'Task deleted successfully!'
-                ],
-                toBrowser: true
-            );
+          // In ConfirmModal.php - already using correct format
+          $this->dispatch('toast',
+              type: 'success',
+              message: 'Task deleted successfully!',
+              toBrowser: true
+          );
 
         }
         $this->dispatch('modal-close', name: $this->name);

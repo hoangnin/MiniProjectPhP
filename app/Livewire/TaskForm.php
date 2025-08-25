@@ -53,10 +53,12 @@ class TaskForm extends Component
                 'due_date' => $this->due_date ? \Carbon\Carbon::parse($this->due_date) : null,
             ]);
         }
-        $this->dispatch('toast', [
-            'type' => 'error',
-            'message' => $this->taskId ? 'Task updated successfully!' : 'Task created successfully!'
-        ]);
+        // In TaskForm.php
+        $this->dispatch('toast',
+            type: $this->taskId ? 'success' : 'success',
+            message: $this->taskId ? 'Task updated successfully!' : 'Task created successfully!',
+            toBrowser: true
+        );
         $this->reset();
         $this->dispatch('taskAdded');
         $this->dispatch('modal-close', name: $this->modalName);
