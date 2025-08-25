@@ -112,6 +112,9 @@
             </table>
         </div>
 
+
+
+
         <flux:modal wire:model="showTaskForm" name="createTaskForm" class="md:w-screen" container-class="w-full">
             <livewire:task-form/>
         </flux:modal>

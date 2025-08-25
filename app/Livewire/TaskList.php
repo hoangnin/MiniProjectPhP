@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -36,12 +37,14 @@ class TaskList extends Component
     public function tasks()
     {
         return Task::query()
+            ->where('user_id', Auth::id())
             ->when($this->search, function ($q) {
                 $q->where(function ($w) {
                     $w->where('title', 'like', '%'.$this->search.'%')
                         ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
+            ->orderBy($this->sortField, $this->sortDirection)
             ->latest()
             ->get();
     }
