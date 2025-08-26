@@ -19,8 +19,14 @@ new #[Layout('layouts.guest')] class extends Component
         $this->form->authenticate();
 
         Session::regenerate();
+        $this->dispatch('toast', type: 'success', message: 'Welcome back! You are now logged in.');
+        $this->js("
+        setTimeout(function() {
+            window.location = '" . route('dashboard') . "';
+        }, 1500);
+    ");
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+//        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 }; ?>
 

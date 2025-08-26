@@ -66,6 +66,7 @@ class TaskForm extends Component
     public function cancel()
     {
         $this->dispatch('modal-close', name: $this->modalName);
+        $this->dispatch('toast', type: 'info', message: $this->taskId? 'Task update was cancelled.' : 'Task creation was cancelled');
     }
     public function render()
     {

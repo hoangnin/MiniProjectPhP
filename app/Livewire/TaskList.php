@@ -7,14 +7,16 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TaskList extends Component
 {
+    use WithPagination;
     public $search = '';
     public $showTaskForm = false;
     public $statusFilter = [];
-    public $sortField = 'created_at';
-    public $sortDirection = 'desc';
+    public $sortField = 'due_date';
+    public $sortDirection = 'asc';
 
     public function openForm()
     {
@@ -32,6 +34,18 @@ class TaskList extends Component
     {
         // chỉ cần để trống -> Livewire sẽ re-render component
     }
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+
+        $this->resetPage();
+    }
+
 
     #[Computed]
     public function tasks()
@@ -45,9 +59,21 @@ class TaskList extends Component
                 });
             })
             ->orderBy($this->sortField, $this->sortDirection)
-            ->latest()
-            ->get();
+            ->paginate(15);
     }
+
+    public function updatedSearch($value)
+    {
+        if (trim($value) !== '' && $this->tasks()->isEmpty()) {
+            $this->dispatch(
+                'toast',
+                type: 'error',
+                message: "No tasks found for keyword: {$value}",
+                toBrowser: true
+            );
+        }
+    }
+
 
 
 
