@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class TaskForm extends Component
 {
-    public $title, $description, $status = '', $due_date, $taskId = null;
+    public $title, $description, $status = '', $due_date, $taskId = null, $projectId = null;
     public $modalName;
     protected $rules = [
         'title' => 'required|string|max:255',
@@ -17,8 +17,10 @@ class TaskForm extends Component
         'due_date' => 'required|date|after_or_equal:today'
     ];
 
-    public function mount($taskId = null)
+    public function mount($taskId = null, $projectId = null, $modalName = 'createTaskForm')
     {
+        $this->projectId = $projectId;
+        $this->modalName = $modalName;
         if ($taskId) {
             $task = Task::findOrFail($taskId);
             $this->taskId = $task->id;
@@ -34,24 +36,21 @@ class TaskForm extends Component
     public function submit()
     {
         $this->validate();
+        $data = [
+            'title' => $this->title,
+            'description' => $this->description,
+            'status' => $this->status,
+            'due_date' => $this->due_date ? \Carbon\Carbon::parse($this->due_date) : null,
+            'user_id' => Auth::id(),
+        ];
+        if ($this->projectId){
+            $data['project_id'] = $this->projectId;
+        }
         if ($this->taskId) {
-            // Update
             $task = Task::findOrFail($this->taskId);
-            $task->update([
-                'title' => $this->title,
-                'description' => $this->description,
-                'status' => $this->status,
-                'due_date' => $this->due_date ? \Carbon\Carbon::parse($this->due_date) : null,
-            ]);
+            $task->update($data);
         } else {
-//            create
-            Task::create([
-                'user_id' => Auth::id(),
-                'title' => $this->title,
-                'description' => $this->description,
-                'status' => $this->status,
-                'due_date' => $this->due_date ? \Carbon\Carbon::parse($this->due_date) : null,
-            ]);
+            Task::create($data);
         }
         // In TaskForm.php
         $this->dispatch('toast',
@@ -63,11 +62,13 @@ class TaskForm extends Component
         $this->dispatch('taskAdded');
         $this->dispatch('modal-close', name: $this->modalName);
     }
+
     public function cancel()
     {
         $this->dispatch('modal-close', name: $this->modalName);
-        $this->dispatch('toast', type: 'info', message: $this->taskId? 'Task update was cancelled.' : 'Task creation was cancelled');
+        $this->dispatch('toast', type: 'info', message: $this->taskId ? 'Task update was cancelled.' : 'Task creation was cancelled');
     }
+
     public function render()
     {
         return view('livewire.task-form');

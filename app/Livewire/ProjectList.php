@@ -34,6 +34,15 @@ class ProjectList extends Component
     {
         $this->resetPage();
     }
+    public function show(Project $project)
+    {
+        // Check if the current user has permission to view this project
+        if ($project->owner_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('projects.show', compact('project'));
+    }
 
     public function sortBy($field)
     {

@@ -129,7 +129,7 @@
                                 </flux:button>
                             </flux:modal.trigger>
                             <flux:modal name="update-task-{{$task->id}}" class="md:w-screen" container-class="w-full">
-                                <livewire:task-form :taskId="$task->id" :modalName="'update-task-'.$task->id" :key="'task-form-'.$task->id"/>
+                                <livewire:task-form :projectId="$this->projectId" :taskId="$task->id" :modalName="'update-task-'.$task->id" :key="'task-form-'.$task->id"/>
                             </flux:modal>
 
                             {{--confirm model--}}
@@ -161,7 +161,7 @@
 
 
         <flux:modal wire:model="showTaskForm" name="createTaskForm" class="md:w-screen" container-class="w-full">
-            <livewire:task-form/>
+            <livewire:task-form :projectId="$this->projectId" />
         </flux:modal>
     </div>
 </div>

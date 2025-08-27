@@ -17,7 +17,12 @@ class TaskList extends Component
     public $statusFilter = [];
     public $sortField = 'due_date';
     public $sortDirection = 'asc';
+    public $projectId = null;
 
+    public function mount($projectId = null)
+    {
+        $this->projectId = $projectId;
+    }
     public function openForm()
     {
         $this->showTaskForm = true;
@@ -52,6 +57,9 @@ class TaskList extends Component
     {
         return Task::query()
             ->where('user_id', Auth::id())
+            ->when($this->projectId, function ($query){
+                $query->where('project_id', $this->projectId);
+            })
             ->when($this->search, function ($q) {
                 $q->where(function ($w) {
                     $w->where('title', 'like', '%'.$this->search.'%')

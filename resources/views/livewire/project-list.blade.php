@@ -71,7 +71,9 @@
                             </div>
                         </td>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ $project->name }}
+                            <a href="{{ route('projects.show', $project->id) }}" class="hover:text-blue-600 hover:underline">
+                                {{ $project->name }}
+                            </a>
                         </th>
                         <td class="px-6 py-4">
                             {{ Str::limit($project->description, 50) }}
