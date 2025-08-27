@@ -25,6 +25,11 @@ class ProjectList extends Component
         'projectDeleted' => '$refresh',
     ];
 
+    public function openForm()
+    {
+        $this->showProjectForm = true;
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();

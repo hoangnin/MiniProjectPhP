@@ -1,6 +1,5 @@
-{{-- resources/views/projects/index.blade.php --}}
-@extends('layouts.app')
-
-@section('content')
-    <livewire:project-list />
-@endsection
+<x-app-layout>
+    <div class="p-6">
+        <livewire:project-list />
+    </div>
+</x-app-layout>
